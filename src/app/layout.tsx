@@ -22,7 +22,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookiesStore = await cookies();
-  const profile = JSON.parse(cookiesStore.get("user_profile")?.value ?? "");
+  const profile = cookiesStore.get("user_profile") ? JSON.parse(cookiesStore.get("user_profile")?.value ?? "") : "";
 
   return (
     <html lang="en" suppressHydrationWarning>
