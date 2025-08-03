@@ -11,12 +11,16 @@ import { useQuery } from "@tanstack/react-query";
 import { Pencil, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { cn, convertIDR } from "@/lib/utils";
 import { Menu } from "@/validations/menu-validation";
 import Image from "next/image";
+import { cn, convertIDR } from "@/lib/utils";
 import { HEADER_TABLE_MENU } from "@/constants/menu-constant";
+import DialogCreateMenu from "./dialog-create-menu";
+import DialogUpdateMenu from "./dialog-update-menu";
+import DialogDeleteMenu from "./dialog-delete-menu";
 
 export default function MenuManagement() {
+  const [open, setOpen] = useState(false);
   const supabase = createClient();
   const {
     currentPage,
@@ -41,14 +45,14 @@ export default function MenuManagement() {
 
       if (currentSearch) {
         query.or(
-          `name.ilike.%${currentSearch}%, category.ilike.%${currentSearch}%`
+          `name.ilike.%${currentSearch}%,category.ilike.%${currentSearch}%`
         );
       }
 
       const result = await query;
 
       if (result.error)
-        toast.error("Get menu data failed", {
+        toast.error("Get Menu data failed", {
           description: result.error.message,
         });
 
@@ -70,13 +74,16 @@ export default function MenuManagement() {
       return [
         currentLimit * (currentPage - 1) + index + 1,
         <div className="flex items-center gap-2">
-          <Image
-            src={menu.image_url as string}
-            alt={menu.name}
-            width={40}
-            height={40}
-            className="rounded"
-          />
+          {menu.image_url && menu.image_url != "null" && (
+            <Image
+              src={menu.image_url as string}
+              alt={menu.name}
+              width={40}
+              height={40}
+              className="rounded"
+            />
+          )}
+
           {menu.name}
         </div>,
         menu.category,
@@ -84,17 +91,17 @@ export default function MenuManagement() {
           <p>Base: {convertIDR(menu.price)}</p>
           <p>Discount: {menu.discount}</p>
           <p>
-            After Discount:{' '}
+            After Discount:{" "}
             {convertIDR(menu.price - (menu.price * menu.discount) / 100)}
           </p>
         </div>,
         <div
           className={cn(
-            'px-2 py-1 rounded-full text-white w-fit',
-            menu.is_available ? 'bg-green-600' : 'bg-red-500',
+            "px-2 py-1 rounded-full text-white w-fit",
+            menu.is_available ? "bg-green-600" : "bg-red-500"
           )}
         >
-          {menu.is_available ? 'Available' : 'Not Available'}
+          {menu.is_available ? "Available" : "Not Available"}
         </div>,
         <DropdownAction
           menu={[
@@ -108,7 +115,7 @@ export default function MenuManagement() {
               action: () => {
                 setSelectedAction({
                   data: menu,
-                  type: 'update',
+                  type: "update",
                 });
               },
             },
@@ -119,11 +126,11 @@ export default function MenuManagement() {
                   Delete
                 </span>
               ),
-              variant: 'destructive',
+              variant: "destructive",
               action: () => {
                 setSelectedAction({
                   data: menu,
-                  type: 'delete',
+                  type: "delete",
                 });
               },
             },
@@ -142,16 +149,17 @@ export default function MenuManagement() {
   return (
     <div className="w-full">
       <div className="flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full">
-        <h1 className="text-2xl font-bold">User Management</h1>
+        <h1 className="text-2xl font-bold">Menu Management</h1>
         <div className="flex gap-2">
           <Input
-            placeholder="Search by name"
+            placeholder="Search by name or category"
             onChange={(e) => handleChangeSearch(e.target.value)}
           />
-          <Dialog>
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button variant="outline">Create</Button>
             </DialogTrigger>
+            <DialogCreateMenu refetch={refetch} open={open} />
           </Dialog>
         </div>
       </div>
@@ -164,6 +172,19 @@ export default function MenuManagement() {
         currentLimit={currentLimit}
         onChangePage={handleChangePage}
         onChangeLimit={handleChangeLimit}
+      />
+      <DialogUpdateMenu
+        open={selectedAction !== null && selectedAction.type === "update"}
+        refetch={refetch}
+        currentData={selectedAction?.data}
+        handleChangeAction={handleChangeAction}
+      />
+
+      <DialogDeleteMenu
+        open={selectedAction !== null && selectedAction.type === "delete"}
+        refetch={refetch}
+        currentData={selectedAction?.data}
+        handleChangeAction={handleChangeAction}
       />
     </div>
   );

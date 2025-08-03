@@ -31,7 +31,7 @@ export default function DialogDelete({
             <DialogTitle>Delete {title}</DialogTitle>
             <DialogDescription>
               Are you sure you want to delete this
-              <span className="lowercase">{title}</span>
+              <span className="lowercase"> {title}</span>
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
