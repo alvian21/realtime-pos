@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
 import { HEADER_TABLE_TABLE } from "@/constants/table-constant";
 import { Table } from "@/validations/table-validation";
 import DialogCreateTable from "./dialog-create-table";
+import DialogUpdateTable from "./dialog-update-table";
+import DialogDeleteTable from "./dialog-delete-table";
 
 export default function TableManagement() {
   const [open, setOpen] = useState(false);
@@ -154,19 +156,19 @@ export default function TableManagement() {
         onChangePage={handleChangePage}
         onChangeLimit={handleChangeLimit}
       />
-      {/* <DialogUpdateMenu
+      <DialogUpdateTable
         open={selectedAction !== null && selectedAction.type === "update"}
         refetch={refetch}
         currentData={selectedAction?.data}
         handleChangeAction={handleChangeAction}
       />
 
-      <DialogDeleteMenu
+      <DialogDeleteTable
         open={selectedAction !== null && selectedAction.type === "delete"}
         refetch={refetch}
         currentData={selectedAction?.data}
         handleChangeAction={handleChangeAction}
-      /> */}
+      />
     </div>
   );
 }
