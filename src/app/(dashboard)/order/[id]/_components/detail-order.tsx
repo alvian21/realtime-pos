@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
 import { toast } from "sonner";
+import Summary from "./summary";
 
 export default function DetailOrder({ id }: { id: string }) {
   const supabase = createClient();
@@ -92,7 +93,7 @@ export default function DetailOrder({ id }: { id: string }) {
   }, [orderMenu?.data]);
 
   const totalPages = useMemo(() => {
-    return orderMenu && orderMenu.count !== null
+    return orderMenu && orderMenu.count !== null 
       ? Math.ceil(orderMenu.count / currentLimit)
       : 0;
   }, [orderMenu]);
@@ -102,7 +103,7 @@ export default function DetailOrder({ id }: { id: string }) {
     <div className="w-full space-y-4">
       <div className="flex items-center gap-4 justify-between w-full">
         <h1 className="text-2xl font-bold">Detail Order</h1>
-        <Link href="">
+        <Link href={`/order/${id}/add`}>
           <Button>Add Order Item</Button>
         </Link>
       </div>
@@ -118,6 +119,11 @@ export default function DetailOrder({ id }: { id: string }) {
             onChangePage={handleChangePage}
             onChangeLimit={handleChangeLimit}
           />
+        </div>
+        <div className="lg:w-1/3">
+          {order && (
+            <Summary order={order} orderMenu={orderMenu?.data} id={id} />
+          )}
         </div>
       </div>
     </div>

@@ -3,10 +3,11 @@
 import { createClient } from '@/lib/supabase/server';
 import { formState } from '@/types/general';
 import { MenuFormState } from '@/types/menu';
-import { OrderFormState } from '@/types/order';
+import { Cart, OrderFormState } from '@/types/order';
 import { TableFormState } from '@/types/table.t';
 import { orderFormSchema, orderSchema } from '@/validations/order-validation';
 import { tableSchema } from '@/validations/table-validation';
+import { redirect } from 'next/navigation';
 import { FormState } from 'react-hook-form';
 
 
@@ -122,3 +123,28 @@ export async function deleteTable(prevState: MenuFormState, formData: FormData |
     }
 
 }
+
+export async function addOrderItem(
+    prevState: OrderFormState,
+    data: {
+      order_id: string;
+      items: Cart[];
+    },
+  ) {
+    const supabase = await createClient();
+  
+    const payload = data.items.map(({ total, menu, ...item }) => item);
+  
+    const { error } = await supabase.from('orders_menus').insert(payload);
+    if (error) {
+      return {
+        status: 'error',
+        errors: {
+          ...prevState,
+          _form: [],
+        },
+      };
+    }
+  
+    redirect(`/order/${data.order_id}`);
+  }
