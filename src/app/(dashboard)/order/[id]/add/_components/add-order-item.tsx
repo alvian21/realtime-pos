@@ -56,7 +56,7 @@ export default function AddOrderItem({ id }: { id: string }) {
       const result = await supabase
         .from("orders")
         .select(
-          "id, order_id, customer_name, status, payment_url, tables (name, id)"
+          "id, order_id, customer_name, status, payment_token, tables (name, id)"
         )
         .eq("order_id", id)
         .single();
