@@ -121,7 +121,7 @@ export default function DetailOrder({ id }: { id: string }) {
             "bg-gray-500": item.status === "pending",
             "bg-yellow-500": item.status === "process",
             "bg-blue-500": item.status === "ready",
-            "bg-green-500": item.status === "serve",
+            "bg-green-500": item.status === "served",
           })}
         >
           {item.status}
