@@ -37,6 +37,16 @@ export default function AppSidebar() {
   const { isMobile } = useSidebar();
   const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
+  const permissions = useAuthStore((state) => state.permissions);
+
+  const menus = SIDEBAR_MENU_LIST[user?.role?.toLocaleLowerCase() as SidebarMenuKey]?.filter(
+    (menu) => {
+      // kalau menu tidak punya required → langsung tampil
+      if (!menu.required) return true;
+      // kalau punya required → cek apakah ada di permission user
+      return permissions.includes(menu.required);
+    }
+  );
 
   return (
     <Sidebar collapsible="icon">
@@ -58,7 +68,7 @@ export default function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent className="flex flex-col gap-2">
             <SidebarMenu>
-              {SIDEBAR_MENU_LIST[user?.role as SidebarMenuKey]?.map(
+              {menus?.map(
                 (item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild tooltip={item.title}>

@@ -21,3 +21,9 @@ export async function authMe() {
   const res = await api.get("/auth/me");
   return res.data.data;
 }
+
+export async function authPermissions() {
+  const api = await createServerApi();
+  const res = await api.get("/auth/permissions");
+  return res.data.data;
+}

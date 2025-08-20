@@ -5,7 +5,9 @@ import { Toaster } from "@/components/ui/sonner";
 import AuthStoreProvider from "@/providers/auth-store-provider";
 import { cookies } from "next/headers";
 import ReactQueryProvider from "@/providers/react-query-provider";
-import { authMe } from "@/actions/auth-action";
+import { authMe, authPermissions } from "@/actions/auth-action";
+import { useAuthStore } from "@/stores/auth-store";
+import AuthInitializer from "@/components/common/auth-initializer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +46,7 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
+              <AuthInitializer />
               {children}
               <Toaster />
             </ThemeProvider>
