@@ -7,7 +7,6 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { FileImage } from "lucide-react";
 import { getImageData } from "@/lib/utils";

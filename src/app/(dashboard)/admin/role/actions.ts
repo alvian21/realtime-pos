@@ -1,12 +1,55 @@
 'use server';
 
-import { INITIAL_STATE_LOGIN_FORM } from "@/constants/auth-constant";
-import { AuthFormState } from "@/types/auth";
-import { loginSchemaForm } from "@/validations/auth-validation";
-import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { createServerApi } from "@/lib/axios.server";
+import { INITIAL_STATE_ROLE } from "@/constants/role-constant";
+import { roleSchema } from "@/validations/role-validation";
+import { RoleFormState } from "@/types/role";
+
+
+export async function createRole(prevState: RoleFormState, formData: FormData | null) {
+
+    if (!formData) {
+        return INITIAL_STATE_ROLE;
+    }
+
+    let validateFields = roleSchema.safeParse({
+        alias: formData.get('alias'),
+        isActive: formData.get('isActive') === 'true' ? true : false,
+        name: formData.get('name')
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: 'error',
+            errors: {
+                ...validateFields.error.flatten().fieldErrors,
+                _form: []
+            }
+        };
+    }
+    
+    const api = await createServerApi();
+
+    try {
+        await api.post("/roles", validateFields.data);
+
+        return {
+            status: 'success'
+        };
+    } catch (error: any) {
+
+        const errorData = error?.response?.data;
+
+        return {
+            status: 'error',
+            errors: {
+                ...prevState.errors,
+                _form: [errorData?.message || "Terjadi kesalahan yang tidak terduga."]
+            }
+        };
+    }
+
+}
 
 export async function getAllRoles(
     {
@@ -39,4 +82,53 @@ export async function getAllRoles(
             status: "error"
         };
     }
+}
+
+
+export async function updateRole(prevState: RoleFormState, formData: FormData | null) {
+
+    if (!formData) {
+        return INITIAL_STATE_ROLE;
+    }
+
+    let validateFields = roleSchema.safeParse({
+        alias: formData.get('alias'),
+        isActive: formData.get('isActive') === 'true' ? true : false,
+        name: formData.get('name')
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: 'error',
+            errors: {
+                ...validateFields.error.flatten().fieldErrors,
+                _form: []
+            }
+        };
+    }
+
+
+    const api = await createServerApi();
+
+    try {
+        await api.patch(`/roles/${formData.get('id')}`, {
+            ...validateFields.data
+        });
+
+        return {
+            status: 'success'
+        }
+
+    } catch (error: any) {
+        const errorData = error?.response?.data;
+
+        return {
+            status: 'error',
+            errors: {
+                ...prevState.errors,
+                _form: [errorData?.message || "Terjadi kesalahan yang tidak terduga."]
+            }
+        };
+    }
+
 }
