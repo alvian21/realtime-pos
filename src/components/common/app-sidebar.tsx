@@ -55,7 +55,7 @@ export default function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <div className="font-semibold">
-                <div className="bg-teal-500 flex p-2 items-center justify-center rounded-md">
+                <div className="bg-blue-500 flex p-2 items-center justify-center rounded-md">
                   <Coffee className="size-4" />
                 </div>
                 MY Cafe
@@ -75,7 +75,7 @@ export default function AppSidebar() {
                       <Link
                         href={item.url}
                         className={cn("px-4 py-3 h-auto", {
-                          "bg-teal-500 text-white hover:bg-teal-500 hover:text-white":
+                          "bg-blue-500 text-white hover:bg-blue-500 hover:text-white":
                             pathname === item.url,
                         })}
                       >
@@ -85,7 +85,7 @@ export default function AppSidebar() {
                       {/* <a
                         href={item.url}
                         className={cn("px-4 py-3 h-auto", {
-                          "bg-teal-500 text-white hover:bg-teal-500 hover:text-white":
+                          "bg-blue-500 text-white hover:bg-blue-500 hover:text-white":
                             pathname === item.url,
                         })}
                       >
