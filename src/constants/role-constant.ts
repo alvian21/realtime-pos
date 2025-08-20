@@ -1,0 +1,1 @@
+export const HEADER_TABLE_ROLE = ['No', 'Name', 'Alias', 'Status', 'Created At', 'Action'];

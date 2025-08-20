@@ -12,7 +12,7 @@ type SidebarMenuItem = {
     title: string;
     url: string;
     icon: LucideIcon;
-    required?: string; // opsional, hanya ada kalau menu butuh permission
+    required?: string;
 };
 
 export const SIDEBAR_MENU_LIST: Record<"admin" | "cashier" | "kitchen", SidebarMenuItem[]>  = {

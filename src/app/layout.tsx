@@ -26,6 +26,11 @@ export default async function RootLayout({
 }>) {
   let user = null;
 
+  const cookiesStore = await cookies();
+  const access_token = cookiesStore.get("access_token")
+    ? cookiesStore.get("access_token")
+    : "";
+
   try {
     const res = await authMe();
     user = res ?? null;
@@ -46,7 +51,7 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <AuthInitializer />
+              {access_token && <AuthInitializer />}
               {children}
               <Toaster />
             </ThemeProvider>
