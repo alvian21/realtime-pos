@@ -1,22 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { startTransition, useActionState, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
-  updateRole,
   getListPermissions,
   getListRolePermissions,
   assignRolePermission,
 } from "../actions";
 import {
-  RoleForm,
-  roleFormSchema,
-  RolePermission,
-  rolePermissionSchema,
-} from "@/validations/role-validation";
-import {
   INITIAL_STATE_ROLE_PERMISSION,
-  INITIAL_ROLE_PERMISSION_FORM,
 } from "@/constants/role-constant";
 import { Role } from "@/types/role";
 import {
@@ -38,7 +28,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { Form } from "@/components/ui/form";
 
 type Permission = {
   id: string;
@@ -57,7 +46,6 @@ export default function DialogUpdatePermission({
   open?: boolean;
   handleChangeAction?: (open: boolean) => void;
 }) {
-  console.log(currentData);
   const [permissionList, setPermissionList] = useState(null);
   const [selectedPermissionRoleId, setSelectedPermissionRoleId] = useState<
     Permission[]
@@ -71,7 +59,6 @@ export default function DialogUpdatePermission({
       const detailRolePermission = await getListRolePermissions(
         currentData?.id as string
       );
-      console.log("detail", detailRolePermission);
       const dataPermission = Object.values(detailRolePermission);
       const permissionId = [];
       for (let i = 0; i < dataPermission.length; i++) {
@@ -94,7 +81,7 @@ export default function DialogUpdatePermission({
     }
   }, [currentData]);
 
-  const [updateRoleState, updateRoleAction, isPendingUpdateRole] =
+  const [updateRolePermissionState, updateRolePermissionAction, isPendingUpdateRolePermission] =
     useActionState(assignRolePermission, INITIAL_STATE_ROLE_PERMISSION);
 
   const onSubmit = (() => {
@@ -107,23 +94,23 @@ export default function DialogUpdatePermission({
 
     formData.append("roleId", currentData?.id ?? "");
     startTransition(() => {
-      updateRoleAction(formData);
+      updateRolePermissionAction(formData);
     });
   });
 
   useEffect(() => {
-    if (updateRoleState?.status === "error") {
-      toast.error("Update role Failed", {
-        description: updateRoleState.errors?._form?.[0],
+    if (updateRolePermissionState?.status === "error") {
+      toast.error("Update role permission Failed", {
+        description: updateRolePermissionState.errors?._form?.[0],
       });
     }
 
-    if (updateRoleState.status === "success") {
-      toast.success("Update role success");
+    if (updateRolePermissionState.status === "success") {
+      toast.success("Update role permission success");
       handleChangeAction?.(false);
       refetch();
     }
-  }, [updateRoleState]);
+  }, [updateRolePermissionState]);
 
   const selectPermission = (
     eventChecked: boolean,
@@ -208,7 +195,7 @@ export default function DialogUpdatePermission({
           </DialogClose>
 
           <Button type="submit" onClick={onSubmit}>
-            {isPendingUpdateRole ? (
+            {isPendingUpdateRolePermission ? (
               <Loader2 className="animate-spin" />
             ) : (
               "Simpan"
