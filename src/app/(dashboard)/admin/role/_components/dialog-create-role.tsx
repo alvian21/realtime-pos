@@ -34,7 +34,7 @@ export default function DialogCreateRole({ refetch }: { refetch: () => void }) {
       });
     }
 
-    if (createRoleState.status === "success") {
+    if (createRoleState?.status === "success") {
       toast.success("create role success");
       form.reset();
       document.querySelector<HTMLButtonElement>('[data-state="open"]')?.click();

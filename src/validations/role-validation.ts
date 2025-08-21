@@ -6,6 +6,11 @@ export const roleSchema = z.object({
     isActive: z.boolean()
 });
 
+export const rolePermissionSchema = z.object({
+    permissionIds: z.string(),
+    roleId: z.string()
+});
+
 export const roleFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
     alias: z.string().min(1, 'Alias is required'),
@@ -14,3 +19,4 @@ export const roleFormSchema = z.object({
 
 export type Role = z.infer<typeof roleSchema> & { id: string };
 export type RoleForm = z.infer<typeof roleFormSchema>;
+export type RolePermission = z.infer<typeof rolePermissionSchema>;

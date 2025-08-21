@@ -16,6 +16,7 @@ import { getAllRoles } from "../actions";
 import { Role } from "@/types/role";
 import DialogCreateRole from "./dialog-create-role";
 import DialogUpdateRole from "./dialog-update-role";
+import DialogUpdatePermission from "./dialog-update-permission";
 
 export default function RoleManagement() {
   const {
@@ -33,21 +34,23 @@ export default function RoleManagement() {
   } = useQuery({
     queryKey: ["roles", currentPage, currentLimit, currentSearch],
     queryFn: async () => {
-      const result = await getAllRoles({currentPage: (currentPage - 1) * currentLimit, currentLimit, currentSearch});
+      const result = await getAllRoles({
+        currentPage: (currentPage - 1) * currentLimit,
+        currentLimit,
+        currentSearch,
+      });
 
       if (result.error)
         toast.error("Get role data failed", {
           description: result.error.message,
         });
-
-      console.log('result', result);
       return result?.data;
     },
   });
 
   const [selectedAction, setSelectedAction] = useState<{
     data: Role;
-    type: "update" | "delete";
+    type: "update" | "delete" | "update-permission";
   } | null>(null);
 
   const handleChangeAction = (open: boolean) => {
@@ -60,7 +63,7 @@ export default function RoleManagement() {
         currentLimit * (currentPage - 1) + index + 1,
         role.name,
         role.alias,
-        role.isActive ? 'Aktif' : 'Non-Aktif',
+        role.isActive ? "Aktif" : "Non-Aktif",
         formatDate(role.createdAt),
         <DropdownAction
           menu={[
@@ -75,6 +78,20 @@ export default function RoleManagement() {
                 setSelectedAction({
                   data: role,
                   type: "update",
+                });
+              },
+            },
+            {
+              label: (
+                <span className="flex items-center gap-2">
+                  <Pencil />
+                  Permission
+                </span>
+              ),
+              action: () => {
+                setSelectedAction({
+                  data: role,
+                  type: "update-permission",
                 });
               },
             },
@@ -134,6 +151,13 @@ export default function RoleManagement() {
       />
       <DialogUpdateRole
         open={selectedAction !== null && selectedAction.type === "update"}
+        refetch={refetch}
+        currentData={selectedAction?.data}
+        handleChangeAction={handleChangeAction}
+      />
+
+      <DialogUpdatePermission
+        open={selectedAction !== null && selectedAction.type === "update-permission"}
         refetch={refetch}
         currentData={selectedAction?.data}
         handleChangeAction={handleChangeAction}

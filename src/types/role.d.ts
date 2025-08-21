@@ -17,3 +17,12 @@ export type RoleFormState = {
         _form?: string[];
     };
 };
+
+export type RolePermissionFormState = {
+    status?: string;
+    errors?: {
+        id?: string[];
+        permissionIds?: string[];
+        _form?: string[];
+    };
+};

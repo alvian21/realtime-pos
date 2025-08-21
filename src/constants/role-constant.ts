@@ -25,3 +25,15 @@ export const INITIAL_STATE_ROLE = {
         _form: [],
     }
 }
+
+export const INITIAL_ROLE_PERMISSION_FORM = {
+    permissionIds: []
+}
+
+export const INITIAL_STATE_ROLE_PERMISSION = {
+    status: 'idle',
+    errors: {
+        permissionIds: [],
+        _form: [],
+    }
+}
