@@ -134,6 +134,32 @@ export async function updateRole(prevState: RoleFormState, formData: FormData | 
 }
 
 
+export async function deleteRole(prevState: RoleFormState, formData: FormData | null) {
+
+
+    const api = await createServerApi();
+
+    try {
+        await api.delete(`/roles/${formData?.get('id')}`);
+
+        return {
+            status: 'success'
+        }
+
+    } catch (error: any) {
+        const errorData = error?.response?.data;
+
+        return {
+            status: 'error',
+            errors: {
+                ...prevState.errors,
+                _form: [errorData?.message || "Terjadi kesalahan yang tidak terduga."]
+            }
+        };
+    }
+
+}
+
 export async function getListPermissions() {
 
     try {

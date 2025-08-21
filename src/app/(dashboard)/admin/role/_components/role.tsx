@@ -17,6 +17,7 @@ import { Role } from "@/types/role";
 import DialogCreateRole from "./dialog-create-role";
 import DialogUpdateRole from "./dialog-update-role";
 import DialogUpdatePermission from "./dialog-update-permission";
+import DialogDeleteRole from "./dialog-delete-role";
 
 export default function RoleManagement() {
   const {
@@ -157,18 +158,20 @@ export default function RoleManagement() {
       />
 
       <DialogUpdatePermission
-        open={selectedAction !== null && selectedAction.type === "update-permission"}
+        open={
+          selectedAction !== null && selectedAction.type === "update-permission"
+        }
         refetch={refetch}
         currentData={selectedAction?.data}
         handleChangeAction={handleChangeAction}
       />
 
-      {/* <DialogDeleteUser
+      <DialogDeleteRole
         open={selectedAction !== null && selectedAction.type === "delete"}
         refetch={refetch}
         currentData={selectedAction?.data}
         handleChangeAction={handleChangeAction}
-      /> */}
+      />
     </div>
   );
 }
