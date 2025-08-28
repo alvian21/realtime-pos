@@ -8,14 +8,17 @@ import { Input } from "@/components/ui/input";
 import useDataTable from "@/hooks/use-data-table";
 import { useQuery } from "@tanstack/react-query";
 import { Pencil, Trash2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/utils";
 import { getAllUsers } from "../actions";
 import { User } from "@/types/user";
 import { HEADER_TABLE_USER } from "@/constants/user-constant";
+import DialogCreateUser from "./dialog-create-user";
+import { getAllRoles } from "../../role/actions";
 
 export default function UserManagement() {
+  const [open, setOpen] = useState(false);
   const {
     currentPage,
     currentLimit,
@@ -53,6 +56,21 @@ export default function UserManagement() {
   const handleChangeAction = (open: boolean) => {
     if (!open) setSelectedAction(null);
   };
+
+  const { data: roles, refetch: refetchRoles } = useQuery({
+    queryKey: ["roles"],
+    queryFn: async () => {
+      const result = await getAllRoles({});
+
+      return result.data.data;
+    },
+  });
+
+  useEffect(() => {
+    if (open) {
+      refetchRoles();
+    }
+  }, [open]);
 
   const filteredData = useMemo(() => {
     return (users?.data || []).map((user: User, index: number) => {
@@ -115,10 +133,11 @@ export default function UserManagement() {
             placeholder="Search by name"
             onChange={(e) => handleChangeSearch(e.target.value)}
           />
-          <Dialog>
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button variant="outline">Create</Button>
             </DialogTrigger>
+            <DialogCreateUser roles={roles} refetch={refetch} />
           </Dialog>
         </div>
       </div>

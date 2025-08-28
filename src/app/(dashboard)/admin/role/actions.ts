@@ -58,8 +58,8 @@ export async function getAllRoles(
         currentSearch
     }:
         {
-            currentPage: number,
-            currentLimit: number,
+            currentPage?: number,
+            currentLimit?: number,
             currentSearch?: string
         }) {
 

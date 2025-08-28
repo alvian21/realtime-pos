@@ -9,8 +9,50 @@ export const INITIAL_USER_FORM = {
 export const INITIAL_STATE_USER = {
     status: 'idle',
     errors: {
-        name: [],
-        alias: [],
+        email: [],
+        password: [],
+        nickname: [],
+        fullName: [],
+        roleId: [],
+        file: [],
+        isActive: [],
+        _form: [],
+    }
+}
+
+export const INITIAL_CREATE_USER_FORM = {
+    nickname: '',
+    fullName: '',
+    roleId: '',
+    file: '',
+    email: '',
+    password: '',
+    isActive: false
+}
+
+export const INITIAL_STATE_CREATE_USER = {
+    status: 'idle',
+    errors: {
+        email: [],
+        password: [],
+        nickname: [],
+        fullName: [],
+        roleId: [],
+        file: [],
+        isActive: [],
+        _form: [],
+    }
+}
+
+export const INITIAL_STATE_UPDATE_USER = {
+    status: 'idle',
+    errors: {
+        email: [],
+        password: [],
+        nickname: [],
+        fullName: [],
+        roleId: [],
+        file: [],
         isActive: [],
         _form: [],
     }

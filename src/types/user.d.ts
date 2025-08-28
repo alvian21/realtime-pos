@@ -20,10 +20,9 @@ export type UserFormState = {
         id?: string[];
         email?: string[];
         fullName?: string[];
-        role?: string[];
+        roleId?: string[];
         nickname?: string[];
-        image?: string[];
-        createdAt: string[];
+        file?: string[];
         isActive?: string[];
         _form?: string[];
     };

@@ -12,12 +12,7 @@ export const INITIAL_STATE_LOGIN_FORM = {
     }
 }
 
-export const INITIAL_STATE_PROFILE = {
-    id: '',
-    name: '',
-    role: '',
-    avatar_url: ''
-}
+
 
 export const INITIAL_STATE_USER = {
     id: '',
@@ -29,34 +24,12 @@ export const INITIAL_STATE_USER = {
 }
 
 
-export const INITIAL_CREATE_USER_FORM = {
+
+export const INITIAL_STATE_PROFILE = {
+    id: '',
     name: '',
     role: '',
-    avatar_url: '',
-    email: '',
-    password: ''
-}
-
-export const INITIAL_STATE_CREATE_USER = {
-    status: 'idle',
-    errors: {
-        email: [],
-        password: [],
-        name: [],
-        role: [],
-        avatar_url: [],
-        _form: [],
-    }
-}
-
-export const INITIAL_STATE_UPDATE_USER = {
-    status: 'idle',
-    errors: {
-        name: [],
-        role: [],
-        avatar_url: [],
-        _form: [],
-    }
+    avatar_url: ''
 }
 
 export const ROLE_LIST = [{
